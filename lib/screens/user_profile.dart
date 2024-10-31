@@ -26,13 +26,19 @@ class _UserProfileState extends State<UserProfile> {
           elevation: 0,
           backgroundColor: Colors.deepPurple.shade800,
           centerTitle: true,
-          title: const Text("Profile"),
+          title: const Text(
+            "Profile",
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          ),
           actions: [
             IconButton(
                 onPressed: () {
                   Navigator.of(context).pushNamed('/login');
                 },
-                icon: Icon(Icons.people))
+                icon: Icon(
+                  Icons.people,
+                  color: Colors.white,
+                ))
           ],
         ),
         bottomNavigationBar: BottomNavigationBar(
@@ -57,7 +63,7 @@ class _UserProfileState extends State<UserProfile> {
                       },
                       icon: const Icon(Icons.play_circle_outline)),
                   label: 'Play'),
-                   BottomNavigationBarItem(
+              BottomNavigationBarItem(
                   icon: IconButton(
                       onPressed: () {
                         Navigator.of(context).pushNamed('search');
@@ -76,7 +82,10 @@ class _UserProfileState extends State<UserProfile> {
           children: [
             Column(
               children: [
-                const SizedBox(
+                SizedBox(
+                  height: 10,
+                ),
+                Container(
                   height: 120,
                   width: 120,
                   child: CircleAvatar(
@@ -103,6 +112,7 @@ class _UserProfileState extends State<UserProfile> {
               ],
             ),
             Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 SizedBox(
                   height: 20,
@@ -110,112 +120,75 @@ class _UserProfileState extends State<UserProfile> {
                 Padding(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                  child: ElevatedButton(
-                      // padding: EdgeInsets.all(20),
-                      // shape: RoundedRectangleBorder(
-                      //   borderRadius: BorderRadius.circular(15),
-                      // ),
-                      // color: Colors.deepPurple.shade400,
-                      onPressed: () {},
-                      child: Row(
-                        children: const [
-                          Icon(Icons.person, color: Colors.white),
-                          SizedBox(
-                            width: 20,
-                          ),
-                          Text(
-                            "My Acc",
-                            style: TextStyle(color: Colors.white),
-                          )
-                        ],
-                      )),
-                )
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-              child: ElevatedButton(
-                  // padding: EdgeInsets.all(20),
-                  // shape: RoundedRectangleBorder(
-                  //   borderRadius: BorderRadius.circular(15),
-                  // ),
-                  // color: Colors.deepPurple.shade400,
-                  onPressed: () {},
-                  child: Row(
-                    children: const [
-                      Icon(Icons.notification_important_rounded,
-                          color: Colors.white),
-                      SizedBox(
-                        width: 20,
-                      ),
-                      Text("Notification",
-                          style: TextStyle(color: Colors.white)),
-                    ],
-                  )),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-              child: ElevatedButton(
-                  // padding: EdgeInsets.all(20),
-                  // shape: RoundedRectangleBorder(
-                  //   borderRadius: BorderRadius.circular(15),
-                  // ),
-                  // color: Colors.deepPurple.shade400,
-                  onPressed: () {},
-                  child: Row(
-                    children: const [
-                      Icon(Icons.settings, color: Colors.white),
-                      SizedBox(
-                        width: 20,
-                      ),
-                      Text("Setting", style: TextStyle(color: Colors.white)),
-                    ],
-                  )),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-              child: ElevatedButton(
-                  // padding: EdgeInsets.all(20),
-                  // shape: RoundedRectangleBorder(
-                  //   borderRadius: BorderRadius.circular(15),
-                  // ),
-                  // color: Colors.deepPurple.shade400,
-                  onPressed: () {},
                   child: Row(
                     children: const [
                       Icon(Icons.person, color: Colors.white),
                       SizedBox(
                         width: 20,
                       ),
-                      Text("Help Center",
-                          style: TextStyle(color: Colors.white)),
+                      Text(
+                        "My Acc",
+                        style: TextStyle(color: Colors.white),
+                      )
                     ],
-                  )),
+                  ),
+                )
+              ],
             ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-              child: ElevatedButton(
-                  // padding: EdgeInsets.all(20),
-                  // shape: RoundedRectangleBorder(
-                  //   borderRadius: BorderRadius.circular(15),
-                  // ),
-                  // color: Colors.deepPurple.shade400,
-                  onPressed: () {},
-                  child: Row(
-                    children: const [
-                      Icon(
-                        Icons.logout,
-                        color: Colors.white,
-                      ),
-                      SizedBox(
-                        width: 20,
-                      ),
-                      Text(
-                        "Log Out",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ],
-                  )),
+              child: Row(
+                children: const [
+                  Icon(Icons.notification_important_rounded,
+                      color: Colors.white),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  Text("Notification", style: TextStyle(color: Colors.white)),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+              child: Row(
+                children: const [
+                  Icon(Icons.settings, color: Colors.white),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  Text("Setting", style: TextStyle(color: Colors.white)),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+              child: Row(
+                children: const [
+                  Icon(Icons.person, color: Colors.white),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  Text("Help Center", style: TextStyle(color: Colors.white)),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+              child: Row(
+                children: const [
+                  Icon(
+                    Icons.logout,
+                    color: Colors.white,
+                  ),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  Text(
+                    "Log Out",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ],
+              ),
             ),
           ],
         ),

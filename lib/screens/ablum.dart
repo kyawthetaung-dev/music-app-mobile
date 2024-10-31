@@ -17,8 +17,7 @@ MediaItem mediaItem = MediaItem(
     artUri: Uri.parse(SongDatabase.songList[0].icon!),
     album: SongDatabase.songList[0].album,
     duration: SongDatabase.songList[0].duration,
-    artist: SongDatabase.songList[0].artist
-);
+    artist: SongDatabase.songList[0].artist);
 
 int current = 0;
 
@@ -142,14 +141,7 @@ class AudioPlayerTask extends BackgroundAudioTask {
 }
 
 class Ablum extends StatefulWidget {
-  int index;
-  String? albName;
-  String? musicName;
-  String? albImage;
-  String? musicId;
-  String? url;
-  
-  Ablum({Key? key,required this.url,required this.index,required this.musicId,required this.albName, required this.musicName, required this.albImage,}) : super(key: key);
+  Ablum({Key? key}) : super(key: key);
 
   @override
   State<Ablum> createState() => _AblumState();
@@ -166,19 +158,12 @@ class _AblumState extends State<Ablum> {
   String currentTitle = "";
   String currentMusic = "";
   String musciID = "";
-  String url = ""; 
+  String url = "";
   Duration? dura;
-        
+
   @override
   void initState() {
     super.initState();
-  
-    currentIndex = widget.index;
-    currentImageUrl = widget.albImage!;
-    currentMusic = widget.musicName!;
-    currentTitle = widget.albName!;
-    musciID = widget.musicId!;
-    url = widget.url!;
     // log(url);
 
     setAudioSource();
@@ -186,10 +171,10 @@ class _AblumState extends State<Ablum> {
 
   Future<void> setAudioSource() async {
     // audioPlayer.setAudioSource(ConcatenatingAudioSource(children: [
-      
-      // AudioSource.uri(Uri.parse('$mainUrl$url')),
+
+    // AudioSource.uri(Uri.parse('$mainUrl$url')),
     // ]));
-    // audioPlayer.play(); 
+    // audioPlayer.play();
     try {
       Duration? duration = await audioPlayer.setUrl('$mainUrl$url');
       print('MP3 file duration: ${duration!.inSeconds} seconds');
@@ -198,23 +183,14 @@ class _AblumState extends State<Ablum> {
     } catch (e) {
       print('Error getting MP3 file duration: $e');
     }
-    SongDatabase.songList = [
-      Song(
-        url: '$mainUrl$url',
-        name: widget.musicName,
-        artist: widget.albName,
-        duration: dura,
-        icon: "${widget.albImage}",
-        album: widget.albName
-      )
-    ];
+    SongDatabase.songList = [Song()];
     // if (AudioService.running) {
-      await AudioService.skipToNext();
-      await AudioService.play();
+    await AudioService.skipToNext();
+    await AudioService.play();
     // } else {
-      await AudioService.start(
-        backgroundTaskEntrypoint: _backgroundTaskEntrypoint,
-      );
+    await AudioService.start(
+      backgroundTaskEntrypoint: _backgroundTaskEntrypoint,
+    );
     // }
   }
 
@@ -237,18 +213,16 @@ class _AblumState extends State<Ablum> {
           fit: StackFit.expand,
           children: [
             Image.network(
-              currentImageUrl,
+              'https://i.pinimg.com/550x/d1/79/c5/d179c5c424ed339058effcb85c3f0f49.jpg',
               fit: BoxFit.cover,
             ),
-            const BackgroundFilter(),
+            BackgroundFilter(),
             musicPlayer(),
           ],
         ),
       ),
     );
   }
-
-
 
   Widget musicPlayer() {
     return Padding(
@@ -258,7 +232,7 @@ class _AblumState extends State<Ablum> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            currentMusic,
+            'ဇာတ်ပို့',
             style: Theme.of(context).textTheme.headlineSmall!.copyWith(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
@@ -269,32 +243,32 @@ class _AblumState extends State<Ablum> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                currentTitle,
+                'Fokker',
                 maxLines: 2,
                 style: Theme.of(context).textTheme.bodySmall!.copyWith(
                       color: Colors.white,
                     ),
               ),
               IconButton(
-                 icon: _isFavourite
-                ? const Icon(
-                    Icons.favorite,
-                    color: Colors.red,
-                  )
-                : const Icon(
-                    Icons.favorite_outline,
-                    color: Colors.white,
-                  ),
-            onPressed: () {
-              setState(() {
-                _isFavourite = !_isFavourite;
-              });
-            },                
+                icon: _isFavourite
+                    ? const Icon(
+                        Icons.favorite,
+                        color: Colors.red,
+                      )
+                    : const Icon(
+                        Icons.favorite_outline,
+                        color: Colors.white,
+                      ),
+                onPressed: () {
+                  setState(() {
+                    _isFavourite = !_isFavourite;
+                  });
+                },
               )
             ],
           ),
           const SizedBox(height: 30),
-          
+
           // StreamBuilder<Duration>(
           //   stream: AudioService.positionStream,
           //   builder: (_, snapshot) {
@@ -344,24 +318,30 @@ class _AblumState extends State<Ablum> {
           },
         ),
         StreamBuilder<PlaybackState>(
-                      stream: AudioService.playbackStateStream,
-                      builder: (context, snapshot) {
-                        final playing = snapshot.data?.playing ?? false;
-                        if (playing)
-                          return IconButton(
-                              icon: Icon(Icons.pause_circle_outline, color: Colors.white,),
-                              iconSize: 55,
-                              onPressed: () {
-                                AudioService.pause();
-                              });
-                        else
-                          return IconButton(
-                              icon: Icon(Icons.play_circle_outline, color: Colors.white,),
-                              iconSize: 55,
-                              onPressed: () {
-                                  AudioService.play();
-                              });
-                      }),
+            stream: AudioService.playbackStateStream,
+            builder: (context, snapshot) {
+              final playing = snapshot.data?.playing ?? false;
+              if (playing)
+                return IconButton(
+                    icon: Icon(
+                      Icons.pause_circle_outline,
+                      color: Colors.white,
+                    ),
+                    iconSize: 55,
+                    onPressed: () {
+                      AudioService.pause();
+                    });
+              else
+                return IconButton(
+                    icon: Icon(
+                      Icons.play_circle_outline,
+                      color: Colors.white,
+                    ),
+                    iconSize: 55,
+                    onPressed: () {
+                      AudioService.play();
+                    });
+            }),
         StreamBuilder<SequenceState?>(
           stream: audioPlayer.sequenceStateStream,
           builder: (context, index) {

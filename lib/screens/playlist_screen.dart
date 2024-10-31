@@ -1,21 +1,15 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:food_list/api/ablum_list_api.dart';
 import 'package:food_list/models/ablum_list_model.dart';
-import 'package:food_list/utils/api_const_url.dart';
 import 'package:just_audio/just_audio.dart';
+
 import 'ablum.dart';
 
 class PlaylistScreen extends StatefulWidget {
-  int? index;
-  String? albName;
-  String? albImage;
-  String? albId;
-  
-  
-   PlaylistScreen({required this.index,required this.albName, required this.albImage,required this.albId, Key? key, }) : super(key: key);
-   
+  PlaylistScreen({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<PlaylistScreen> createState() => _PlaylistScreenState();
@@ -31,19 +25,14 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
   void initState() {
     super.initState();
     getData();
-  } 
-  
+  }
 
   getData() async {
     setState(() {
       isLoading = true;
     });
-    
-    try {
-      log('Awaiting user order... ${widget.albName}');
-      data = await ablumLssistApi(widget.albId.toString());
-    } 
-    catch (err) {
+
+    try {} catch (err) {
       log('Caught error: $err');
     }
 
@@ -51,6 +40,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
       isLoading = false;
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -68,10 +58,11 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
-          title: const Text('Playlist'),
-
+          title: const Text(
+            'Playlist',
+            style: TextStyle(color: Colors.white),
+          ),
           centerTitle: true,
-          
         ),
         body: SingleChildScrollView(
           child: Padding(
@@ -79,77 +70,63 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
             child: Column(
               children: [
                 // if(!isLoading)
-                _PlaylistInformation(image: widget.albImage.toString(), name: widget.albName.toString(), index: widget.index!,),
+                _PlaylistInformation(),
                 const SizedBox(height: 30),
                 const _PlayOrShuffleSwitch(),
-                if(!isLoading)
-                ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: data!.data!.length,
-                  itemBuilder: (context, index) {
-                    return InkWell(
+                if (!isLoading)
+                  ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: 10,
+                    itemBuilder: (context, index) {
+                      return InkWell(
                         onTap: () {
-                              // List tempUrlList = [];
-                              // for (var i = 0; i < data!.data!.length; i++) {
-                              //   tempUrlList.add(data!.data![i].url);
-                              // }
-                              Navigator.of(context).push(
-                                MaterialPageRoute(builder: (builder) =>Ablum(
-                                  musicId: widget.albId,
-                                  index:widget.index!,
-                                  albName:data!.data![index].artist_name!, 
-                                  musicName:data!.data![index].music_name!, 
-                                  albImage:"$mainUrl${data!.data![index].alb_image}", 
-                                  url: data!.data![index].url!,
+                          // List tempUrlList = [];
+                          // for (var i = 0; i < data!.data!.length; i++) {
+                          //   tempUrlList.add(data!.data![i].url);
+                          // }
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (builder) => Ablum(
                                   // url: tempUrlList,
-                              )));
-
-                            },
-                      child: ListTile(
-                          leading: Text(
-                            '${index + 1}',
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyMedium!
-                                .copyWith(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                          ),
-                          title: Text(
-                            data!.data![index].music_name.toString(),
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyLarge!
-                                .copyWith(fontWeight: FontWeight.bold),
-                          ),
-                          subtitle: InkWell(
-                            onTap: () {
-                              // List tempUrlList = [];
-                              // for (var i = 0; i < data!.data!.length; i++) {
-                              //   tempUrlList.add(data!.data![i].url);
-                              // }
-                              Navigator.of(context).push(MaterialPageRoute(builder: (builder) =>Ablum(
-                                musicId: widget.albId,
-                                index:widget.index!,
-                                albName:data!.data![index].artist_name!, 
-                                musicName:data!.data![index].music_name!,
-                                albImage:"$mainUrl${data!.data![index].alb_image}", 
-                                url: data!.data![index].url!,
-                                // url: tempUrlList,
-                              )));
-
-                            },
-                            child: Text(
-                                data!.data![index].artist_name!),
-                          ),
-                          trailing: const Icon(
-                            Icons.play_circle,
-                            color: Colors.white,
-                          )),
-                    );
-                  },
-                )
+                                  )));
+                        },
+                        child: ListTile(
+                            leading: Text(
+                              'ဇာတ်ပို့',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium!
+                                  .copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                            ),
+                            title: Text(
+                              'Wanted',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyLarge!
+                                  .copyWith(fontWeight: FontWeight.bold),
+                            ),
+                            subtitle: InkWell(
+                              onTap: () {
+                                // List tempUrlList = [];
+                                // for (var i = 0; i < data!.data!.length; i++) {
+                                //   tempUrlList.add(data!.data![i].url);
+                                // }
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (builder) => Ablum(
+                                        // url: tempUrlList,
+                                        )));
+                              },
+                              child: Text('Fokker'),
+                            ),
+                            trailing: const Icon(
+                              Icons.play_circle,
+                              color: Colors.white,
+                            )),
+                      );
+                    },
+                  )
               ],
             ),
           ),
@@ -157,7 +134,6 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
       ),
     );
   }
-  
 }
 
 class _PlayOrShuffleSwitch extends StatefulWidget {
@@ -192,7 +168,7 @@ class __PlayOrShuffleSwitchState extends State<_PlayOrShuffleSwitch> {
               left: isPlay ? 0 : width * 0.45,
               child: Container(
                 height: 50,
-                width: width * 0.45,
+                width: width * 0.465,
                 decoration: BoxDecoration(
                   color: Colors.deepPurple.shade400,
                   borderRadius: BorderRadius.circular(15),
@@ -247,21 +223,18 @@ class __PlayOrShuffleSwitchState extends State<_PlayOrShuffleSwitch> {
     );
   }
 }
-  
-class _PlaylistInformation extends StatefulWidget {
-  int index;
-  String image;
-  String name;
 
-  _PlaylistInformation({required this.index, required this.image, required this.name, Key? key,}) : super(key: key);
+class _PlaylistInformation extends StatefulWidget {
+  _PlaylistInformation({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<_PlaylistInformation> createState() => __PlaylistInformationState();
-  
 }
 
 class __PlaylistInformationState extends State<_PlaylistInformation> {
-AudioPlayer audioPlayer = AudioPlayer();
+  AudioPlayer audioPlayer = AudioPlayer();
   int currentIndex = 0;
   String currentImageUrl = "";
   String currentTitle = "";
@@ -269,10 +242,6 @@ AudioPlayer audioPlayer = AudioPlayer();
   @override
   void initState() {
     super.initState();
-
-    currentIndex = widget.index;
-    currentImageUrl = widget.image;
-    currentTitle = widget.name;
   }
 
   @override
@@ -282,7 +251,7 @@ AudioPlayer audioPlayer = AudioPlayer();
         ClipRRect(
           borderRadius: BorderRadius.circular(15.0),
           child: Image.network(
-            currentImageUrl,
+            'https://i.pinimg.com/550x/d1/79/c5/d179c5c424ed339058effcb85c3f0f49.jpg',
             height: MediaQuery.of(context).size.height * 0.3,
             width: MediaQuery.of(context).size.height * 0.3,
             fit: BoxFit.cover,
@@ -290,8 +259,8 @@ AudioPlayer audioPlayer = AudioPlayer();
         ),
         const SizedBox(height: 30),
         Text(
-          currentTitle,
-          style: Theme.of(context)  
+          'Fokker',
+          style: Theme.of(context)
               .textTheme
               .headlineSmall!
               .copyWith(fontWeight: FontWeight.bold),

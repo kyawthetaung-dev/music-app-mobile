@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:food_list/api/search_list_api.dart';
 import 'package:food_list/models/search_list_model.dart';
 import 'package:food_list/screens/new_screen.dart';
-import 'package:food_list/utils/api_const_url.dart';
 
 class SearchHomePage extends StatefulWidget {
   const SearchHomePage({Key? key}) : super(key: key);
@@ -27,18 +26,17 @@ class _SearchHomePageState extends State<SearchHomePage> {
 
   getData() async {
     setState(() {
-      isLoading = true;
+      isLoading = false;
     });
 
     try {
       print('Awaiting user order...');
-       data = await searchListApi();
-       searchedData = data!.data!;
-       setState(() {
-      isLoading = false;
-       });
-    } 
-    catch (err) {
+      data = await searchListApi();
+      searchedData = data!.data!;
+      setState(() {
+        isLoading = false;
+      });
+    } catch (err) {
       print('Caught error: Ablum is emputy $err');
     }
   }
@@ -52,7 +50,9 @@ class _SearchHomePageState extends State<SearchHomePage> {
       results = data!.data!;
     } else {
       results = searchedData!
-          .where((e) => e.music_name!.toLowerCase().contains(enteredKeyword.toLowerCase()))
+          .where((e) => e.music_name!
+              .toLowerCase()
+              .contains(enteredKeyword.toLowerCase()))
           // .where((e) => e.artist_name!.toLowerCase().contains(enteredKeyword.toLowerCase()))
           .toList();
       // we use the toLowerCase() method to make it case-insensitive
@@ -78,13 +78,15 @@ class _SearchHomePageState extends State<SearchHomePage> {
       ),
       child: Scaffold(
         backgroundColor: Colors.transparent,
-         appBar: AppBar(
+        appBar: AppBar(
           elevation: 0,
           backgroundColor: Colors.deepPurple.shade800,
           automaticallyImplyLeading: false,
           // centerTitle: false,
-          title: const Text("Enjoy your favourite music",style: TextStyle(fontWeight: FontWeight.bold),),
-        
+          title: const Text(
+            "Enjoy your favourite music",
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+          ),
         ),
         bottomNavigationBar: BottomNavigationBar(
             type: BottomNavigationBarType.fixed,
@@ -104,11 +106,11 @@ class _SearchHomePageState extends State<SearchHomePage> {
               BottomNavigationBarItem(
                   icon: IconButton(
                       onPressed: () {
-                         Navigator.of(context).pushNamed('play');
+                        Navigator.of(context).pushNamed('play');
                       },
                       icon: const Icon(Icons.play_circle_outline)),
                   label: 'play'),
-                  BottomNavigationBarItem(
+              BottomNavigationBarItem(
                   icon: IconButton(
                       onPressed: () {
                         Navigator.of(context).pushNamed('search');
@@ -125,9 +127,10 @@ class _SearchHomePageState extends State<SearchHomePage> {
             ]),
         body: SingleChildScrollView(
           child: Column(
-            children:  [
-               Padding(
-                padding: const EdgeInsets.only(right: 10.0,left: 10.0,bottom: 8.0),
+            children: [
+              Padding(
+                padding:
+                    const EdgeInsets.only(right: 10.0, left: 10.0, bottom: 8.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -144,7 +147,8 @@ class _SearchHomePageState extends State<SearchHomePage> {
                               .textTheme
                               .bodyMedium!
                               .copyWith(color: Colors.grey.shade400),
-                          prefixIcon: Icon(Icons.search, color: Colors.grey.shade400),
+                          prefixIcon:
+                              Icon(Icons.search, color: Colors.grey.shade400),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(15.0),
                             borderSide: BorderSide.none,
@@ -154,128 +158,99 @@ class _SearchHomePageState extends State<SearchHomePage> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Column(
-                  children: [
-                    if(!isLoading)
-                    searchedData!.isNotEmpty ? ListView.builder(
-                        shrinkWrap: true,
-                        padding: const EdgeInsets.only(top: 20),
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: searchedData!.length,
-                        itemBuilder: ((context, index) {
-                          return InkWell(
-                            onTap: () {
-                              FocusScope.of(context).unfocus();
-                                Navigator.of(context).push(
-                                                      MaterialPageRoute(builder: (builder) =>NewListScreen(
-                                                        index: index, 
-                                                        // albImage: searchedData![index].music_name.toString(), 
-                                                        albImage: "$mainUrl${searchedData![index].music_image}",
-                                                        // musicId: '',
-                                                        // url: "$mainUrl${searchedData![index].music_files}", 
-                                                        musicName: searchedData![index].artist_name.toString(),
-                                                        musicFiles: "$mainUrl${searchedData![index].music_files}", artistName: searchedData![index].music_name.toString(),
-                                                        
-                                                    )));
-                            },
-                            child:
-                            Container(
-                              height: 75,
-                              margin: const EdgeInsets.only(bottom: 10),
-                              padding: const EdgeInsets.symmetric(horizontal: 20),
-                              decoration: BoxDecoration(
-                                color: Colors.deepPurple.shade800.withOpacity(0.6),
-                                borderRadius: BorderRadius.circular(15.0),
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                children: [
-                                  // ClipRRect(
-                                  //   borderRadius: BorderRadius.circular(15.0),
-                                  //   child: Image.network(
-                                  //     "$mainUrl${searchedData![index].music_image}",
-                                  //     height: 40,
-                                  //     width: 40,
-                                  //     fit: BoxFit.cover,
-                                  //   ),
-                                  // ),
-                              //  for (int i = 0; i<widget.index.bitLength; i++)
-                              //    Text(
-                              //                     '${widget.index + 1 }',
-                              //                         style: Theme.of(context)
-                              //                         .textTheme
-                              //                         .bodyMedium!
-                              //                         .copyWith(
-                              //                           fontWeight: FontWeight.bold,
-                              //                         ),
-                              //                   ),
-                                                
-                                  const SizedBox(
-                                    width: 15,
-                                  ),
-                                  Expanded(
+                  padding: const EdgeInsets.all(20.0),
+                  child: ListView.builder(
+                      shrinkWrap: true,
+                      padding: const EdgeInsets.only(top: 20),
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: 10,
+                      itemBuilder: ((context, index) {
+                        return InkWell(
+                          onTap: () {
+                            FocusScope.of(context).unfocus();
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (builder) => NewListScreen()));
+                          },
+                          child: Container(
+                            height: 75,
+                            margin: const EdgeInsets.only(bottom: 10),
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            decoration: BoxDecoration(
+                              color:
+                                  Colors.deepPurple.shade800.withOpacity(0.6),
+                              borderRadius: BorderRadius.circular(15.0),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                // ClipRRect(
+                                //   borderRadius: BorderRadius.circular(15.0),
+                                //   child: Image.network(
+                                //     "$mainUrl${searchedData![index].music_image}",
+                                //     height: 40,
+                                //     width: 40,
+                                //     fit: BoxFit.cover,
+                                //   ),
+                                // ),
+                                //  for (int i = 0; i<widget.index.bitLength; i++)
+                                //    Text(
+                                //                     '${widget.index + 1 }',
+                                //                         style: Theme.of(context)
+                                //                         .textTheme
+                                //                         .bodyMedium!
+                                //                         .copyWith(
+                                //                           fontWeight: FontWeight.bold,
+                                //                         ),
+                                //                   ),
+
+                                const SizedBox(
+                                  width: 15,
+                                ),
+                                Expanded(
                                     // child: searchedData!.isNotEmpty
                                     // ?
-                                    child:
-                                    Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          searchedData![index].artist_name.toString(),
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodyLarge!
-                                              .copyWith(fontWeight: FontWeight.bold),
-                                        ),
-                                        Text(
-                                          searchedData![index].music_name.toString(),
-                                            style: Theme.of(context).textTheme.bodySmall!),
-                                      ],
-                                    )
+                                    child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      'Wanted',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyLarge!
+                                          .copyWith(
+                                              fontWeight: FontWeight.bold),
+                                    ),
+                                    Text('Fokker',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodySmall!),
+                                  ],
+                                )
                                     // :const Text(
                                     //   'Not results found Please try with diffrent search',
                                     //   style: TextStyle(color: Colors.white,fontSize: 20),
                                     // )
-                                  ),
-                                  IconButton(
-                                    onPressed: () {
-                              Navigator.of(context).push(
-                                                      MaterialPageRoute(builder: (builder) =>NewListScreen(
-                                                        index: index, 
-                                                        // albImage: searchedData![index].music_name.toString(), 
-                                                        albImage: "$mainUrl${searchedData![index].music_image}",
-                                                        // musicId: '',
-                                                        // url: "$mainUrl${searchedData![index].music_files}", 
-                                                        musicName: searchedData![index].music_name.toString(),
-                                                        musicFiles: "$mainUrl${searchedData![index].music_files}", 
-                                                        artistName: searchedData![index].artist_name.toString(),
-                                                    )));
-                            },
-                                    icon: const Icon(Icons.play_circle_outline, color: Colors.white),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            // :const Text(
-                            //           'Not results found Please try with diffrent search',
-                            //           style: TextStyle(color: Colors.white,fontSize: 20),
-                            //         )
-                          );
-                        })
-                    ) : const Text(
-                                      'Not results found Please try with diffrent search',
-                                      style: TextStyle(color: Colors.white,fontSize: 20),
                                     ),
-                    if(isLoading)
-                    const Padding(
-                      padding: EdgeInsets.only(top: 20.0),
-                      child: CircularProgressIndicator(color: Colors.black, strokeWidth: 2,),
-                    )
-                  ],
-                )
-              )
+                                IconButton(
+                                  onPressed: () {
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (builder) =>
+                                                NewListScreen()));
+                                  },
+                                  icon: const Icon(Icons.play_circle_outline,
+                                      color: Colors.white),
+                                ),
+                              ],
+                            ),
+                          ),
+                          // :const Text(
+                          //           'Not results found Please try with diffrent search',
+                          //           style: TextStyle(color: Colors.white,fontSize: 20),
+                          //         )
+                        );
+                      })))
               // _PlaylistMusic(searchId: '',)
             ],
           ),

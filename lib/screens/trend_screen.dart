@@ -7,15 +7,10 @@ import 'package:just_audio/just_audio.dart';
 import 'package:rxdart/rxdart.dart' as rxdart;
 import '../widgets/widgets.dart';
 
-
+// ignore: must_be_immutable
 class TrendListScreen extends StatefulWidget {
-  int index;
-  String? artistName;
-  String? albImage;
-  String? musicName;
-  String musicFiles;
   bool _isFavorite = false;
-  TrendListScreen({Key? key, required this.musicFiles,required this.index,required this.musicName,required this.artistName, required this.albImage,}) : super(key: key);
+  TrendListScreen({Key? key}) : super(key: key);
 
   @override
   State<TrendListScreen> createState() => _TrendListScreenState();
@@ -27,28 +22,20 @@ class _TrendListScreenState extends State<TrendListScreen> {
   TrendListDataModel? song;
   bool _isFavorite = false;
 
-        int currentIndex = 0;
-        String currentImageUrl = "";
-        String currentTitle = "";
-        String currentMusic = "";
-        String musciID = "";
-        String url = "";
+  int currentIndex = 0;
+  String currentImageUrl = "";
+  String currentTitle = "";
+  String currentMusic = "";
+  String musciID = "";
+  String url = "";
 
   @override
   void initState() {
     super.initState();
-  
-    currentIndex = widget.index;
-    currentImageUrl = widget.albImage!;
-    currentMusic = widget.musicName!;
-    currentTitle = widget.artistName!;
-    url = widget.musicFiles;
     log(musciID);
 
     audioPlayer.setAudioSource(ConcatenatingAudioSource(children: [
-      
       AudioSource.uri(Uri.parse(url)),
-      
     ]));
     audioPlayer.play();
   }
@@ -65,7 +52,7 @@ class _TrendListScreenState extends State<TrendListScreen> {
         );
       });
 
-     @override
+  @override
   void dispose() {
     super.dispose();
     audioPlayer.dispose();
@@ -83,7 +70,7 @@ class _TrendListScreenState extends State<TrendListScreen> {
         fit: StackFit.expand,
         children: [
           Image.network(
-            currentImageUrl,
+            'https://i.pinimg.com/550x/d1/79/c5/d179c5c424ed339058effcb85c3f0f49.jpg',
             fit: BoxFit.cover,
           ),
           const BackgroundFilter(),
@@ -123,21 +110,21 @@ class _TrendListScreenState extends State<TrendListScreen> {
               //   color: Colors.white,
               // ),
               IconButton(
-                 icon: _isFavorite
-                ? const Icon(
-                    Icons.favorite,
-                    color: Colors.red,
-                  )
-                : const Icon(
-                    Icons.favorite_outline,
-                    color: Colors.white,
-                  ),
-            onPressed: () {
-              setState(() {
-                _isFavorite = !_isFavorite;
-              });
-            },                
-              )  
+                icon: _isFavorite
+                    ? const Icon(
+                        Icons.favorite,
+                        color: Colors.red,
+                      )
+                    : const Icon(
+                        Icons.favorite_outline,
+                        color: Colors.white,
+                      ),
+                onPressed: () {
+                  setState(() {
+                    _isFavorite = !_isFavorite;
+                  });
+                },
+              )
             ],
           ),
           const SizedBox(height: 30),
@@ -165,16 +152,17 @@ class _TrendListScreenState extends State<TrendListScreen> {
           stream: audioPlayer.sequenceStateStream,
           builder: (context, index) {
             return IconButton(
-                onPressed: audioPlayer.hasPrevious ? () {
-                  audioPlayer.seekToPrevious();
-                  setState(() { 
-                    currentIndex = currentIndex - 1;
-                     currentIndex as AlbumListDataModel?;
-                    // song = Song.songs[currentIndex] as AlbumListDataModel?;
-                    // currentImageUrl = widget.albImage!;
-                    
-                   });
-                } : null,
+                onPressed: audioPlayer.hasPrevious
+                    ? () {
+                        audioPlayer.seekToPrevious();
+                        setState(() {
+                          currentIndex = currentIndex - 1;
+                          currentIndex as AlbumListDataModel?;
+                          // song = Song.songs[currentIndex] as AlbumListDataModel?;
+                          // currentImageUrl = widget.albImage!;
+                        });
+                      }
+                    : null,
                 iconSize: 40,
                 icon: const Icon(
                   Icons.skip_previous,
@@ -236,16 +224,18 @@ class _TrendListScreenState extends State<TrendListScreen> {
           stream: audioPlayer.sequenceStateStream,
           builder: (context, index) {
             return IconButton(
-                onPressed: audioPlayer.hasNext ? () {
-                  audioPlayer.seekToNext();
-                  setState(() { 
-                    currentIndex = currentIndex + 1;
-                    // song = Song.songs[currentIndex] as AlbumListDataModel?;
-                    // currentImageUrl = song!.alb_image!;
-                    currentIndex as AlbumListDataModel?;
-                    // currentImageUrl = widget.albImage!;
-                  });
-                } : null,
+                onPressed: audioPlayer.hasNext
+                    ? () {
+                        audioPlayer.seekToNext();
+                        setState(() {
+                          currentIndex = currentIndex + 1;
+                          // song = Song.songs[currentIndex] as AlbumListDataModel?;
+                          // currentImageUrl = song!.alb_image!;
+                          currentIndex as AlbumListDataModel?;
+                          // currentImageUrl = widget.albImage!;
+                        });
+                      }
+                    : null,
                 iconSize: 40,
                 icon: const Icon(
                   Icons.skip_next,
@@ -257,7 +247,6 @@ class _TrendListScreenState extends State<TrendListScreen> {
     );
   }
 }
-
 
 class BackgroundFilter extends StatelessWidget {
   const BackgroundFilter({

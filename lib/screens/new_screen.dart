@@ -7,14 +7,10 @@ import 'package:just_audio/just_audio.dart';
 import 'package:rxdart/rxdart.dart' as rxdart;
 import '../widgets/widgets.dart';
 
-
 class NewListScreen extends StatefulWidget {
-  int index;
-  String? artistName;
-  String? albImage;
-  String? musicName;
-  String musicFiles;
-  NewListScreen({Key? key, required this.musicFiles,required this.index,required this.musicName,required this.artistName, required this.albImage,}) : super(key: key);
+  NewListScreen({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<NewListScreen> createState() => _NewListScreenState();
@@ -26,28 +22,20 @@ class _NewListScreenState extends State<NewListScreen> {
   NewListDataModel? song;
   bool _isFavorite = false;
 
-        int currentIndex = 0;
-        String currentImageUrl = "";
-        String currentTitle = "";
-        String currentMusic = "";
-        String musciID = "";
-        String url = "";
+  int currentIndex = 0;
+  String currentImageUrl = "";
+  String currentTitle = "";
+  String currentMusic = "";
+  String musciID = "";
+  String url = "";
 
   @override
   void initState() {
     super.initState();
-  
-    currentIndex = widget.index;
-    currentImageUrl = widget.albImage!;
-    currentMusic = widget.musicName!;
-    currentTitle = widget.artistName!;
-    url = widget.musicFiles;
     log(musciID);
 
     audioPlayer.setAudioSource(ConcatenatingAudioSource(children: [
-      
       AudioSource.uri(Uri.parse(url)),
-      
     ]));
     audioPlayer.play();
   }
@@ -64,7 +52,7 @@ class _NewListScreenState extends State<NewListScreen> {
         );
       });
 
-       @override
+  @override
   void dispose() {
     super.dispose();
     audioPlayer.dispose();
@@ -82,7 +70,7 @@ class _NewListScreenState extends State<NewListScreen> {
         fit: StackFit.expand,
         children: [
           Image.network(
-            currentImageUrl,
+            'https://i.pinimg.com/550x/d1/79/c5/d179c5c424ed339058effcb85c3f0f49.jpg',
             fit: BoxFit.cover,
           ),
           const BackgroundFilter(),
@@ -100,7 +88,7 @@ class _NewListScreenState extends State<NewListScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            currentMusic,
+            'FE!N',
             style: Theme.of(context).textTheme.headlineSmall!.copyWith(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
@@ -111,27 +99,27 @@ class _NewListScreenState extends State<NewListScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                currentTitle,
+                'Travis Scott',
                 maxLines: 2,
                 style: Theme.of(context).textTheme.bodySmall!.copyWith(
                       color: Colors.white,
                     ),
               ),
               IconButton(
-                 icon: _isFavorite
-                ? const Icon(
-                    Icons.favorite,
-                    color: Colors.red,
-                  )
-                : const Icon(
-                    Icons.favorite_outline,
-                    color: Colors.white,
-                  ),
-            onPressed: () {
-              setState(() {
-                _isFavorite = !_isFavorite;
-              });
-            },                
+                icon: _isFavorite
+                    ? const Icon(
+                        Icons.favorite,
+                        color: Colors.red,
+                      )
+                    : const Icon(
+                        Icons.favorite_outline,
+                        color: Colors.white,
+                      ),
+                onPressed: () {
+                  setState(() {
+                    _isFavorite = !_isFavorite;
+                  });
+                },
               )
             ],
           ),
@@ -160,16 +148,17 @@ class _NewListScreenState extends State<NewListScreen> {
           stream: audioPlayer.sequenceStateStream,
           builder: (context, index) {
             return IconButton(
-                onPressed: audioPlayer.hasPrevious ? () {
-                  audioPlayer.seekToPrevious();
-                  setState(() { 
-                    currentIndex = currentIndex - 1;
-                     currentIndex as AlbumListDataModel?;
-                    // song = Song.songs[currentIndex] as AlbumListDataModel?;
-                    // currentImageUrl = widget.albImage!;
-                    
-                   });
-                } : null,
+                onPressed: audioPlayer.hasPrevious
+                    ? () {
+                        audioPlayer.seekToPrevious();
+                        setState(() {
+                          currentIndex = currentIndex - 1;
+                          currentIndex as AlbumListDataModel?;
+                          // song = Song.songs[currentIndex] as AlbumListDataModel?;
+                          // currentImageUrl = widget.albImage!;
+                        });
+                      }
+                    : null,
                 iconSize: 40,
                 icon: const Icon(
                   Icons.skip_previous,
@@ -231,16 +220,18 @@ class _NewListScreenState extends State<NewListScreen> {
           stream: audioPlayer.sequenceStateStream,
           builder: (context, index) {
             return IconButton(
-                onPressed: audioPlayer.hasNext ? () {
-                  audioPlayer.seekToNext();
-                  setState(() { 
-                    currentIndex = currentIndex + 1;
-                    // song = Song.songs[currentIndex] as AlbumListDataModel?;
-                    // currentImageUrl = song!.alb_image!;
-                    currentIndex as AlbumListDataModel?;
-                    // currentImageUrl = widget.albImage!;
-                  });
-                } : null,
+                onPressed: audioPlayer.hasNext
+                    ? () {
+                        audioPlayer.seekToNext();
+                        setState(() {
+                          currentIndex = currentIndex + 1;
+                          // song = Song.songs[currentIndex] as AlbumListDataModel?;
+                          // currentImageUrl = song!.alb_image!;
+                          currentIndex as AlbumListDataModel?;
+                          // currentImageUrl = widget.albImage!;
+                        });
+                      }
+                    : null,
                 iconSize: 40,
                 icon: const Icon(
                   Icons.skip_next,
@@ -252,7 +243,6 @@ class _NewListScreenState extends State<NewListScreen> {
     );
   }
 }
-
 
 class BackgroundFilter extends StatelessWidget {
   const BackgroundFilter({

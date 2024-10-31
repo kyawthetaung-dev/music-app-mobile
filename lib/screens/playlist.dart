@@ -8,7 +8,6 @@ import 'package:food_list/models/trending_list_model.dart';
 import 'package:food_list/screens/home_screen.dart';
 import 'package:food_list/screens/new_screen.dart';
 import 'package:food_list/screens/trend_screen.dart';
-import 'package:food_list/utils/api_const_url.dart';
 
 class PlayList extends StatefulWidget {
   const PlayList({Key? key}) : super(key: key);
@@ -20,7 +19,6 @@ class PlayList extends StatefulWidget {
 class _PlayListState extends State<PlayList> {
   @override
   Widget build(BuildContext context) {
-   
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
@@ -51,8 +49,6 @@ class _PlayListState extends State<PlayList> {
                       },
                       icon: const Icon(Icons.home)),
                   label: 'Home'),
-
-              
               BottomNavigationBarItem(
                   icon: IconButton(
                       onPressed: () {
@@ -60,7 +56,7 @@ class _PlayListState extends State<PlayList> {
                       },
                       icon: const Icon(Icons.play_circle_outline)),
                   label: 'Play'),
-                  BottomNavigationBarItem(
+              BottomNavigationBarItem(
                   icon: IconButton(
                       onPressed: () {
                         Navigator.of(context).pushNamed('search');
@@ -103,7 +99,6 @@ class __NewMusicState extends State<_NewMusic> {
   void initState() {
     super.initState();
     getData();
-    
   }
 
   getData() async {
@@ -113,15 +108,13 @@ class __NewMusicState extends State<_NewMusic> {
 
     try {
       log('Awaiting trend list...');
-       data = await newListApi();
-       
-    } 
-    catch (err) {
+      data = await newListApi();
+    } catch (err) {
       log('Caught error: Trend is empty $err');
     }
     setState(() {
       isLoading = false;
-       });
+    });
   }
 
   @override
@@ -131,27 +124,29 @@ class __NewMusicState extends State<_NewMusic> {
       child: Column(
         children: [
           const Padding(
-            padding:  EdgeInsets.only(right: 20.0,top: 35),
+            padding: EdgeInsets.only(right: 20.0, top: 35),
             child: SectionHeader(title: 'New Music'),
           ),
           const SizedBox(height: 20),
-          if(!isLoading)
-          SizedBox(
-            height: MediaQuery.of(context).size.height * 0.27,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: data!.data!.length,
-              itemBuilder: (context, index) {
-                return NewSongCard(index: index, newsong: data!.data![index],);
-              },
+          if (!isLoading)
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.27,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: 10,
+                itemBuilder: (context, index) {
+                  return NewSongCard();
+                },
+              ),
             ),
-          ),
-          if(isLoading)
-          const Padding(
-            padding: EdgeInsets.only(top: 20.0),
-            child: CircularProgressIndicator(color: Colors.black, strokeWidth: 2,),
-          ),
-           
+          // if (isLoading)
+          //   const Padding(
+          //     padding: EdgeInsets.only(top: 20.0),
+          //     child: CircularProgressIndicator(
+          //       color: Colors.black,
+          //       strokeWidth: 2,
+          //     ),
+          //   ),
         ],
       ),
     );
@@ -159,21 +154,15 @@ class __NewMusicState extends State<_NewMusic> {
 }
 
 class NewSongCard extends StatefulWidget {
-  NewListDataModel? newsong;
-  int index;
-   NewSongCard({
+  NewSongCard({
     Key? key,
-    required this.newsong,
-    required this.index,
   }) : super(key: key);
-
 
   @override
   State<NewSongCard> createState() => _NewSongCardState();
 }
 
 class _NewSongCardState extends State<NewSongCard> {
-
   @override
   void initState() {
     super.initState();
@@ -183,17 +172,9 @@ class _NewSongCardState extends State<NewSongCard> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-     onTap: () {
-        Navigator.of(context).push(
-          MaterialPageRoute(builder: (builder) =>NewListScreen(
-            index: widget.index, 
-            musicName: widget.newsong!.musicName.toString(),
-            artistName: widget.newsong!.artistName.toString(), 
-            albImage: "$mainUrl${widget.newsong!.albImage}",
-            musicFiles: "$mainUrl${widget.newsong!.musicFiles}",
-            
-          ))
-        );
+      onTap: () {
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (builder) => NewListScreen()));
       },
       child: Container(
         margin: const EdgeInsets.only(right: 10),
@@ -202,18 +183,15 @@ class _NewSongCardState extends State<NewSongCard> {
           children: [
             ClipRRect(
               child: Container(
-                
                 width: MediaQuery.of(context).size.width * 0.45,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15.0),
-                  
                   image: DecorationImage(
                     image: NetworkImage(
-                      "$mainUrl${widget.newsong!.albImage}",
+                      "https://i.pinimg.com/550x/d1/79/c5/d179c5c424ed339058effcb85c3f0f49.jpg",
                     ),
                     fit: BoxFit.cover,
                   ),
-                  
                 ),
               ),
             ),
@@ -233,15 +211,16 @@ class _NewSongCardState extends State<NewSongCard> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        widget.newsong!.artistName.toString(),
+                        'Alan Walker',
                         style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                             color: Colors.deepPurple,
                             fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        widget.newsong!.musicName.toString(),
+                        'Fade',
                         style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                            color: Colors.deepPurple.shade300, fontWeight: FontWeight.bold),
+                            color: Colors.deepPurple.shade300,
+                            fontWeight: FontWeight.bold),
                       ),
                     ],
                   ),
@@ -279,7 +258,6 @@ class _TrendingMusicState extends State<_TrendingMusic> {
   void initState() {
     super.initState();
     getData();
-    
   }
 
   getData() async {
@@ -289,15 +267,13 @@ class _TrendingMusicState extends State<_TrendingMusic> {
 
     try {
       log('Awaiting trend list...');
-       data = await trendListApi();
-       
-    } 
-    catch (err) {
+      data = await trendListApi();
+    } catch (err) {
       log('Caught error: Trend is empty $err');
     }
     setState(() {
       isLoading = false;
-       });
+    });
   }
 
   @override
@@ -306,27 +282,30 @@ class _TrendingMusicState extends State<_TrendingMusic> {
       padding: const EdgeInsets.only(left: 20.0, top: 10.0, bottom: 30.0),
       child: Column(
         children: [
-           const Padding(
-            padding:  EdgeInsets.only(right: 20.0,top: 35),
+          const Padding(
+            padding: EdgeInsets.only(right: 20.0, top: 35),
             child: SectionHeader(title: 'Trending Music'),
           ),
           const SizedBox(height: 20),
-          if(!isLoading)
-          SizedBox(
-            height: MediaQuery.of(context).size.height * 0.27,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: data!.data!.length,
-              itemBuilder: (context, index) {
-                return SongCard(index: index, trendsong: data!.data![index],);
-              },
+          if (!isLoading)
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.27,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: 10,
+                itemBuilder: (context, index) {
+                  return SongCard();
+                },
+              ),
             ),
-          ),
-          if(isLoading)
-          const Padding(
-            padding: EdgeInsets.only(top: 20.0),
-            child: CircularProgressIndicator(color: Colors.black, strokeWidth: 2,),
-          )
+          if (isLoading)
+            const Padding(
+              padding: EdgeInsets.only(top: 20.0),
+              child: CircularProgressIndicator(
+                color: Colors.black,
+                strokeWidth: 2,
+              ),
+            )
         ],
       ),
     );
@@ -334,21 +313,15 @@ class _TrendingMusicState extends State<_TrendingMusic> {
 }
 
 class SongCard extends StatefulWidget {
-  TrendListDataModel? trendsong;
-  int index;
-   SongCard({
+  SongCard({
     Key? key,
-    required this.trendsong,
-    required this.index,
   }) : super(key: key);
-
 
   @override
   State<SongCard> createState() => _SongCardState();
 }
 
 class _SongCardState extends State<SongCard> {
-
   @override
   void initState() {
     super.initState();
@@ -358,17 +331,9 @@ class _SongCardState extends State<SongCard> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-        onTap: () {
-        Navigator.of(context).push(
-          MaterialPageRoute(builder: (builder) =>TrendListScreen(
-            index: widget.index, 
-            musicName: widget.trendsong!.musicName.toString(),
-            artistName: widget.trendsong!.artistName.toString(), 
-            albImage: "$mainUrl${widget.trendsong!.albImage}",
-            musicFiles: "$mainUrl${widget.trendsong!.musicFiles}",
-            
-          ))
-        );
+      onTap: () {
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (builder) => TrendListScreen()));
       },
       child: Container(
         margin: const EdgeInsets.only(right: 10),
@@ -377,18 +342,15 @@ class _SongCardState extends State<SongCard> {
           children: [
             ClipRRect(
               child: Container(
-                
                 width: MediaQuery.of(context).size.width * 0.45,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15.0),
-                  
                   image: DecorationImage(
                     image: NetworkImage(
-                      "$mainUrl${widget.trendsong!.albImage}",
+                      "https://i.pinimg.com/550x/d1/79/c5/d179c5c424ed339058effcb85c3f0f49.jpg",
                     ),
                     fit: BoxFit.cover,
                   ),
-                  
                 ),
               ),
             ),
@@ -408,15 +370,16 @@ class _SongCardState extends State<SongCard> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        widget.trendsong!.artistName.toString(),
+                        'Travis Scott',
                         style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                             color: Colors.deepPurple,
                             fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        widget.trendsong!.musicName.toString(),
+                        'FE!N',
                         style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                            color: Colors.deepPurple.shade300, fontWeight: FontWeight.bold),
+                            color: Colors.deepPurple.shade300,
+                            fontWeight: FontWeight.bold),
                       ),
                     ],
                   ),
@@ -433,5 +396,3 @@ class _SongCardState extends State<SongCard> {
     );
   }
 }
-
-
